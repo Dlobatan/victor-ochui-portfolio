@@ -185,21 +185,34 @@ export function Hero() {
             variants={titleVariants}
             initial="hidden"
             animate="visible"
-            className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl mb-8 tracking-tight cursor-default select-none"
+            className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl mb-8 tracking-tight cursor-default select-none flex flex-wrap justify-center gap-y-2"
           >
-            {title.split('').map((char, index) => (
-              <motion.span
-                key={index}
-                custom={index}
-                variants={letterVariants}
-                whileHover={{ y: -15, scale: 1.1, color: '#c9a86c' }}
-                transition={{ type: "spring", stiffness: 350, damping: 15 }}
-                className="inline-block bg-gradient-to-r from-white via-gold/80 to-white/70 bg-clip-text text-transparent py-2"
-                style={{ whiteSpace: char === ' ' ? 'pre' : 'normal' }}
-              >
-                {char}
-              </motion.span>
-            ))}
+            {(() => {
+              let charCounter = 0;
+              return title.split(' ').map((word, wordIdx) => (
+                <span key={wordIdx} className="inline-block whitespace-nowrap">
+                  {word.split('').map((char, charIdx) => {
+                    const currentIdx = charCounter++;
+                    return (
+                      <motion.span
+                        key={charIdx}
+                        custom={currentIdx}
+                        variants={letterVariants}
+                        whileHover={{ y: -15, scale: 1.1, color: '#c9a86c' }}
+                        transition={{ type: "spring", stiffness: 350, damping: 15 }}
+                        className="inline-block bg-gradient-to-r from-white via-gold/80 to-white/70 bg-clip-text text-transparent py-2"
+                      >
+                        {char}
+                      </motion.span>
+                    );
+                  })}
+                  {/* Space between words */}
+                  {wordIdx < title.split(' ').length - 1 && (
+                    <span className="inline-block">&nbsp;</span>
+                  )}
+                </span>
+              ));
+            })()}
           </motion.h1>
         </motion.div>
 
